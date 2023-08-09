@@ -1,0 +1,62 @@
+﻿@model WebApplication8.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white bg-info">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Name
+                            </h5>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="@Model.Image" width="100%" alt="@Model.Name">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <b>Description: </b>
+                        <p class="card-text">@Model.Description</p>
+                        <b>Department: </b>
+                        <p class="card-text">@Model.Department.Name</p>
+                        <b>Price: </b>
+                        <p class="card-text">$@Model.Price</p>
+
+                        <p class="card-text ">
+                            <b>Availability: </b>
+                            @if (Model.Stock.ToString() != "0")
+                            {
+                                <span class="badge bg-success text-white">IN STOCK</span> }
+                            else
+                            {
+                                <span class="badge bg-primary text-white">OUT OF STOCK</span>}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card-footer">
+                        <p class="card-text">
+                            <a class="btn btn-outline-primary float-right" asp-action="Index">
+                                Back to products
+                            </a>
+                            <a asp-controller="Products" asp-action="Add" asp-route-id="@Model.ProductId" asp-route-returnUrl="@Context.Request.Path" class="btn btn-success text-white btnCart @(("0" == Model.Stock.ToString()) ? "disabled" : "")">
+                                <i class="bi bi-cart-plus"></i> Add to Cart
+                                (@Model.Price.ToString())
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

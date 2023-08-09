@@ -1,0 +1,277 @@
+@model WebApplication8.Models.ShoppingCartIndexModel
+@using Microsoft.Extensions.Options;
+@using System.Globalization
+@inject IOptions<WebApplication8.Data.StripeSetting> Stripe
+<div class="container">
+    <!-- Credit card form -->
+    <section>
+        <form asp-action="Processing" method="post" id="checkoutform">
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                    <div class="card mb-4">
+                        <div class="card-header py-3">
+                            <h5 class="mb-0">Contact Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- 2 column grid layout with text inputs for the first and last names -->
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="form6Example1">First name</label>
+                                        <input type="text" class="form-control" asp-for="customer.FirstName" id="form6Example1" required />
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="form6Example2">Last name</label>
+                                        <input type="text" asp-for="customer.LastName" id="form6Example2" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Text input -->
+                            <!-- Text input -->
+                            <!--<div class="form-outline mb-4">
+        <label class="form-label" for="form6Example4">Address</label>
+        <input type="text" asp-for="customer.Address" id="form6Example4" class="form-control" />
+    </div>-->
+                            <!-- Text input -->
+                            <!--<div class="form-outline mb-4">
+        <label class="form-label" for="form6Example3">City</label>
+        <input type="text" asp-for="customer.City" id="form6Example3" class="form-control" />
+    </div>-->
+                            <!-- Email input -->
+                            <!--<div class="form-outline mb-4">
+        <label class="form-label" for="form6Example5">Postal Code</label>
+        <input type="text" asp-for="customer.PostCode" id="form6Example5" class="form-control" />
+    </div>-->
+                            <!-- Number input -->
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="form6Example6">Phone</label>
+                                <input type="text" asp-for="customer.Phone" id="form6Example6" class="form-control" required />
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="form6Example7">Pick Time</label><span id="PickTime" class="text-danger"></span>
+                                <input type="text" asp-for="PickTime" id="form6Example7" class="form-control ClnderCssDateTime" required="required" />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" for="form6Example4">Email</label>
+                                <input type="email" asp-for="customer.CustomerEmail" id="form6Example4" class="form-control" placeholder="Optional enter email if you wish to receive digital receipt" />
+                            </div>
+
+                            <hr class="my-4" />
+
+                            @*<div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" value="" id="checkoutForm2" checked />
+                                <label class="form-check-label" for="checkoutForm2">
+                                    Save this information for next time
+                                </label>
+                            </div>*@
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="checkoutForm1" />
+                                <label class="form-check-label" for="checkoutForm1">
+                                    Would you like to recieve promotional emails
+                                </label>
+                            </div>
+
+
+
+                            <hr class="my-4" />
+
+                            <h5 class="mb-4">Payment</h5>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="checkoutForm3"
+                                       checked />
+                                <label class="form-check-label" for="checkoutForm3">
+                                    Credit card
+                                </label>
+                            </div>
+                            <hr class="my-4" />
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <label class="form-label" for="formNameOnCard">Name on card</label>
+                                        <input type="text" asp-for="card.Name" id="formNameOnCard" class="form-control" />
+                                        <input type="hidden" asp-for="card.stripeToken" class="token" />
+                                        <input type="hidden" name="token" />
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <label class="form-label">Card number</label>
+                                        <span id="card-number-element" class="form-control"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+                                <div class="col-3">
+                                    <div class="form-outline">
+                                        <label class="form-label">Expiry date</label>
+                                        <span id="card-expiry-element" class="form-control"></span>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-outline">
+                                        <label class="form-label">CVC</label>
+                                        <span id="card-cvc-element" class="form-control"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="error"></div>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">
+                                Continue to checkout $@ViewBag.PaymentAmount
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card mb-4">
+                        <div class="card-header py-3">
+                            <h5 class="mb-0">Order Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                @foreach (var line in Model.ShoppingCart)
+                                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 pb-0">
+                        <a class="text-primary" asp-controller="Products" asp-action="details" asp-route-id="@line.product.ProductId">@line.product.Name</a>
+                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                                        X @line.Quantity
+                                        <span>@((line.Quantity * line.product.Price).Value.ToString("c",CultureInfo.CreateSpecificCulture("en-NZ")))</span>
+                                    </li>
+}
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 mb-3">
+                                    <div>
+                                        <strong>Total Amount</strong>
+                                    </div>
+                                    <span><strong>@(Model.ShoppingCartTotal.ToString("c",CultureInfo.CreateSpecificCulture("en-NZ")))</strong></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+<div style="display:none">
+    <form action="/Order/Processing" method="POST">
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="@Stripe.Value.Publishablekey"
+                data-amount="@ViewBag.PaymentAmount"
+                data-name="Liquor Store"
+                data-description="Shopping Cart"
+                data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                data-locale="auto">
+        </script>
+    </form>
+</div>
+
+@section Scripts {
+    <link href="~/css/jquery.datetimepicker.css" rel="stylesheet" />
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="~/js/jquery.datetimepicker.js"></script>
+    <script>
+    $(function () {
+    var stripe = Stripe('@Stripe.Value.Publishablekey');
+    var elements = stripe.elements();
+
+    var style = {
+        base: {
+            iconColor: '#666EE8',
+            color: '#31325F',
+            lineHeight: '40px',
+            fontWeight: 300,
+            fontFamily: 'Helvetica Neue',
+            fontSize: '15px',
+
+            '::placeholder': {
+                color: '#CFD7E0',
+            },
+        },
+    };
+
+    var cardNumberElement = elements.create('cardNumber', {
+        style: style,
+        placeholder: 'Custom card number',
+    });
+    cardNumberElement.mount('#card-number-element');
+
+    var cardExpiryElement = elements.create('cardExpiry', {
+        style: style,
+        placeholder: 'Custom expiry date',
+    });
+    cardExpiryElement.mount('#card-expiry-element');
+
+    var cardCvcElement = elements.create('cardCvc', {
+        style: style,
+        placeholder: 'Custom CVC',
+    });
+    cardCvcElement.mount('#card-cvc-element');
+
+
+        function setOutcome(result) {
+        //var successElement = document.querySelector('.success');
+        var errorElement = document.querySelector('.error');
+        //successElement.classList.remove('visible');
+        errorElement.classList.remove('visible');
+        if (result.token) {
+            // In this example, we're simply displaying the token
+           // successElement.querySelector('.token2').textContent = result.token.id;
+            //successElement.classList.add('visible');
+
+            // In a real integration, you'd submit the form with the token to your backend server
+            //var form = document.querySelector('#checkoutform');
+            //form.querySelector('input[name="token"]').setAttribute('value', result.token.id);
+            $(".token").val(result.token.id);
+            $('#checkoutform').submit();
+        } else if (result.error) {
+            errorElement.textContent = result.error.message;
+            errorElement.classList.add('visible');
+        }
+    }
+    cardNumberElement.on('change', function (event) {
+        setOutcome(event);
+    });
+        document.querySelector('#checkoutform').addEventListener('submit', function (e) {
+        e.preventDefault();
+            stripe.createToken(cardNumberElement).then(setOutcome);
+    });
+    });
+
+    $(function () {
+        $('.ClnderCssDateTime').datetimepicker({
+            formatTime: "h:i a",
+            format: 'Y/m/d H:i',
+            timepicker: true,
+            minDate: new Date(),
+            defaultDate: false,
+            minTime: '12:00',
+            maxTime: '20:59',
+            prevButton: false,
+            nextButton: false,
+        });
+    });
+        $("#form6Example7").on('change',function () {
+            if ($("#form6Example7").val() != '') {
+                var date = new Date($("#form6Example7").val());
+                isvalidTime(date);
+            }
+        });
+        function isvalidTime(DateTime) {
+            var hours = DateTime.getHours(); //returns 0-23
+            var minutes = DateTime.getMinutes(); //returns 0-59
+            var seconds = DateTime.getSeconds(); //returns 0-59
+            if (hours < 12 || (hours > 20 || (hours == 20 && minutes != 0))) {
+                $("#form6Example7").val('');
+                    $("#PickTime").text(' (Time must be between 12:00 AM and 08:00 PM)');
+            }
+        }
+    </script>
+}
+
+
+

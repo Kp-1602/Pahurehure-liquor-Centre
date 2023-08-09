@@ -1,0 +1,269 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+/*---------------------
+  Shopping Cart
+-----------------------*/
+
+.shopping-cart {
+    padding-top: 80px;
+    padding-bottom: 60px;
+}
+
+.cart-table {
+    margin-bottom: 10px;
+}
+
+    .cart-table table {
+        width: 100%;
+        min-width: 480px;
+        border: 1px solid #ebebeb;
+    }
+
+        .cart-table table tr {
+            border: 1px solid #ebebeb;
+        }
+        .cart-table table tr:hover {
+            background-color:#ffffff!important;
+        }
+
+        .cart-table table tr th {
+                font-size: 16px;
+                color: #252525;
+                font-weight: 700;
+                border-bottom: 1px solid #ebebeb;
+                text-align: center;
+                padding: 18px 0 19px;
+                text-transform: uppercase;
+            }
+
+                .cart-table table tr th.p-name {
+                    text-align: left;
+                }
+
+            .cart-table table tr td {
+                text-align: center;
+                /*padding-bottom: 34px;*/
+            }
+
+                .cart-table table tr td.first-row {
+                    padding-top: 30px;
+                }
+
+                .cart-table table tr td.cart-pic {
+                    width: 21%;
+                    height: 150px;
+                    padding: 10px;
+                    background: #efefef;
+                    border-bottom: 1px solid #fff;
+                }
+
+                    .cart-table table tr td.cart-pic img {
+                        max-height: 140px;
+                        max-width: 95%;
+                    }
+
+                .cart-table table tr td.cart-title {
+                    text-align: left;
+                    padding-left: 5px;
+                }
+
+                    .cart-table table tr td.cart-title h5 {
+                        color: #252525;
+                    }
+
+                .cart-table table tr td.p-price {
+                    width: 16%;
+                }
+
+                    .cart-table table tr td.p-price span {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: #b2b2b2;
+                        text-decoration: line-through;
+                        margin-right: 4px;
+                    }
+
+                .cart-table table tr td.p-price,
+                .cart-table table tr td.total-price {
+                    color: #c4161c;
+                    font-size: 16px;
+                    font-weight: 700;
+                }
+
+                .cart-table table tr td.qua-col {
+                    width: 20%;
+                }
+
+                    .cart-table table tr td.qua-col .quantity {
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -webkit-box-pack: center;
+                        -ms-flex-pack: center;
+                        justify-content: center;
+                    }
+
+                    .cart-table table tr td.qua-col .pro-qty {
+                        width: 170px;
+                        height: 46px;
+                        border: 2px solid #ebebeb;
+                        padding: 0 15px;
+                        float: left;
+                    }
+
+                        .cart-table table tr td.qua-col .pro-qty .qtybtn {
+                            font-size: 24px;
+                            color: #b2b2b2;
+                            float: left;
+                            line-height: 40px;
+                            cursor: pointer;
+                            text-align: center;
+                            padding: 0px 15px;
+                        }
+
+                            .cart-table table tr td.qua-col .pro-qty .qtybtn.dec {
+                                font-size: 30px;
+                            }
+
+                        .cart-table table tr td.qua-col .pro-qty input {
+                            text-align: center;
+                            width: 52px;
+                            font-size: 14px;
+                            font-weight: 700;
+                            border: none;
+                            color: #4c4c4c;
+                            line-height: 40px;
+                            float: left;
+                        }
+
+                .cart-table table tr td.total-price {
+                    width: 12%;
+                }
+
+                .cart-table table tr td.close-td {
+                    font-size: 16px;
+                    color: #252525;
+                    width: 8%;
+                }
+
+                    .cart-table table tr td.close-td i {
+                        cursor: pointer;
+                    }
+
+.cart-buttons {
+    /*margin-bottom: 34px;*/
+}
+
+    .cart-buttons .continue-shop {
+        text-align: center;
+        color: #fff;
+        border: 2px solid #c4161c;
+        background: #c4161c;
+        margin-right: 8px;
+        padding: 12px 20px 12px 20px;
+        /*margin-bottom: 10px;*/
+    }
+
+    .cart-buttons .up-cart {
+        color: #252525;
+        background: #f3f3f3;
+        border: 2px solid #ebebeb;
+        padding: 12px 20px 12px 20px;
+    }
+.cart-table table tr td.qua-col .pro-qty {
+    width: 170px;
+    height: 46px;
+    border: 2px solid #ebebeb;
+    padding: 0 13px;
+    float: left;
+}
+    .cart-table table tr td.qua-col .pro-qty .qtybtn {
+        font-size: 24px;
+        color: #b2b2b2;
+        float: left;
+        line-height: 40px;
+        cursor: pointer;
+        text-align: center;
+        padding: 0px 13px;
+    }
+    .cart-table table tr td.qua-col .pro-qty input {
+        text-align: center;
+        width: 52px;
+        font-size: 14px;
+        font-weight: 700;
+        border: none;
+        color: #4c4c4c;
+        line-height: 40px;
+        float: left;
+    }
+
+

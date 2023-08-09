@@ -1,0 +1,139 @@
+﻿@model IPagedList<WebApplication8.Models.Product>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core.Common;
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Wine";
+}
+
+<h1>Craft</h1>
+
+
+<form id="searchForm" action="/Products/Index" method="get" autocomplete="off">
+    <p>
+        Search Products:
+        <div>
+            <input type="text" id="searchString" name="searchString"
+                   autocomplete="off" onkeyup="XAjaxRequest(this.value);"
+                   style="width: 180px" />
+            <input type="submit" class="btn btn-outline-primary" value="Seach" />
+            <br />
+            <div id="autoSuggestContainer" style="position:absolute;display:none;z-index:100;">
+
+            </div>
+        </div>
+
+    </p>
+</form>
+
+<script type="text/javascript">
+    function XAjaxRequest(searchString) {
+        if (searchString.length < 1) {
+            //on deleting input to enter something else, needs clear
+            document.getElementById("autoSuggestContainer").innerHTML = "";
+            return;
+        }
+        //alert("testing searchString=" + searchString);
+        var xmlhttp;
+        xmlhttp = new XMLHttpRequest();
+        var url = "/Products/IndexAJAX?searchString=" + searchString;
+        xmlhttp.open("GET", url, false); // open connection, GET is quick and simple, false: sync page will freeze
+        xmlhttp.send(); // send the request to IndexAJAX
+        document.getElementById("autoSuggestContainer").style.display = "block";
+        //2020-03-23 JPC need to clear out the container for a fresh auto-suggest list
+        //else the auto-suggest list can keep growing and growing with additional user keyups
+        document.getElementById("autoSuggestContainer").innerHTML = "";
+
+        var messageObject = JSON.parse(xmlhttp.responseText); // receive the respose text
+
+        var autoSuggestions = "";
+
+        for (var i = 0; i < messageObject.length; i++) {
+            //HTML code generation demo
+            //Works together with the ".innerHTML" statement after the end of this "for" block
+            autoSuggestions +=
+                "<input type=\"button\" value=\"" + messageObject[i].Name + "\" "
+                + "onclick=\"document.getElementById('searchString').value = this.value; document.getElementById('searchForm').submit();\" "
+                + "style =\"width: 280px\" />";
+            autoSuggestions += "<br />";
+        }
+        //place the generated buttons HTML code inside the display div
+        document.getElementById("autoSuggestContainer").innerHTML = autoSuggestions;
+    }
+</script>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-3 d-flex">
+            <div class="product ftco-animate border">
+                <div class="img d-flex align-items-center justify-content-center cart-pic" style="background-image: url(@item.Image);">
+                    <div class="desc">
+                        <p class="meta-prod d-flex">
+                            <a class="d-flex align-items-center justify-content-center" asp-controller="Products" asp-action="Add" asp-route-id="@item.ProductId"><span class="flaticon-shopping-bag"></span></a>
+                            <a class="d-flex align-items-center justify-content-center" asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId" asp-route-returnUrl="@Context.Request.Path"><span class="flaticon-visibility"></span></a>
+                        </p>
+                    </div>
+                </div>
+                <div class="text text-center">
+                    <h2>@item.Name</h2>
+                    <p class="mb-0"><span class="price">@item.Price.Value.ToString("c", CultureInfo.CreateSpecificCulture("en-NZ"))</span></p>
+                    <p class="card-text ">
+                        <b>Availability: </b>
+                        @if (item.Stock.ToString() != "0")
+                        {
+                            <span class="badge bg-success text-white">IN STOCK</span> }
+                        else
+                        {
+                            <span class="badge bg-primary text-white">OUT OF STOCK</span>}
+                    </p>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                <p><a class="btn btn-outline-primary" ;class="bi bi-pencil-square" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>|<a class="btn btn-outline-danger" ;class="bi bi-pencil-square" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a></p>
+                    }
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
+<!-- output a paging control that lets the user navigation to the previous page, next page, etc -->
+
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+        new { Page = page }),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" }
+    })
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $(".btnCart").on('click', function () {
+                var id = $(this).parent().find('.id').val();
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/Cart/Add_To_Cart?id=' + id,
+                    success: function (data) {
+
+                        console.log(data);
+                        alert("Success");
+
+                        window.location.href = '/Cart/Index';
+
+                    }
+                });
+            });
+        });
+    </script>
+}

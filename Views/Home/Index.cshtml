@@ -1,0 +1,205 @@
+﻿@model IEnumerable<WebApplication8.Models.Product>
+@using System.Globalization
+@{ Layout = null;}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pahurehure Liquor Store - Home Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="~/css/animate.css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/css/flaticon.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+</head>
+<body>
+    <div class="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center">
+                    <p class="mb-0 phone pl-md-2">
+                        <a href="#" class="mr-2"><span class="fa fa-phone mr-1"></span> +64 22 647 3333</a>
+                        <a href="mailto: abc@example.com"><span class="fa fa-paper-plane mr-1"></span> liquor.pahurehure@gmail.com</a>
+                    </p>
+                </div>
+                <div class="col-md-6 d-flex justify-content-md-end">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div class="reg">
+                            <p class="mb-0"><a asp-area="Identity" asp-page="/Account/Logout" class="mr-2">Log Out</a><a href="#">Welcome @User.Identity.Name!</a></p>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="reg">
+                            <p class="mb-0"><a asp-area="Identity" asp-page="/Account/Login" class="mr-2">Sign Up</a> <a asp-area="Identity" asp-page="/Account/Login">Log In</a></p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div class="container">
+            <a class="navbar-brand" asp-action="index" asp-controller="Home">Pahurehure Liquor <span>store</span></a>
+            <div class="order-lg-last btn-group">
+                <a asp-controller="ShoppingCart" asp-action="Index" class="btn-cart dropdown-toggle dropdown-toggle-split">
+                    <span class="flaticon-shopping-bag"></span>
+                    <div class="d-flex justify-content-center align-items-center"><small>@ViewBag.CartCount</small></div>
+                </a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="oi oi-menu"></span> Menu
+            </button>
+
+            <div class="collapse navbar-collapse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active"><a asp-action="index" asp-controller="Home" class="nav-link"><i class="bi bi-house"></i> Home</a></li>
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-area="" asp-controller="Products" asp-action="Index">
+                            <i class="bi bi-shop-window"></i> Products
+                        </a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="bi bi-gear"></i> Admin Tools
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-area="" asp-controller="Report" asp-action="Index"><i class="bi bi-card-checklist"></i> Orders Report</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Create"><i class="bi bi-file-earmark-plus"></i> Add Product</a>
+                    </div>
+                </li>
+                    }
+                    else
+                    {
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="bi bi-gear"></i> Categories
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" asp-controller="Products" asp-action="Spirit"><i class=""></i> Spirit</a>
+                        <a class="dropdown-item" asp-controller="Products" asp-action="Beer"><i class=""></i> Beer</a>
+                        <a class="dropdown-item" asp-controller="Products" asp-action="Port"><i class=""></i> Port</a>
+                        <a class="dropdown-item" asp-controller="Products" asp-action="Wine"><i class=""></i> Wine</a>
+                        <a class="dropdown-item" asp-controller="Products" asp-action="Premix"><i class=""></i> Premix</a>
+                    </div>
+                </li>
+                    }
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-area="" asp-controller="ContactUs" asp-action="Index"><i class="bi bi-chat-text"></i> ContactUs</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-area="" asp-controller="Aboutus" asp-action="Index"><i class="bi bi-geo-alt"></i> AboutUs</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- END nav -->
+    <partial name="_HomeSliders.cshtml" />
+
+    <section class="ftco-section ftco-no-pb">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-2 col-md-4 ">
+                    <div class="sort w-100 text-center ftco-animate">
+                        <a asp-controller="Products" asp-action="Beer"><div class="img" onclick="" style="background-image: url('images/beer-gb4a0abe17_1920.jpg')"></div></a>
+                        <h3><a asp-controller="Products" asp-action="Beer">Beers</a></h3>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <div class="sort w-100 text-center ftco-animate">
+                        <a asp-controller="Products" asp-action="Wine">
+                            <div class="img" style="background-image: url('images/wine.jpg'); "></div>
+                        </a><h3><a asp-controller="Products" asp-action="Wine">Wines</a></h3>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <div class="sort w-100 text-center ftco-animate">
+                        <a asp-controller="Products" asp-action="Premix">
+                            <div class="img" style="background-image: url('images/Pre.png'); "></div>
+                        </a><h3><a asp-controller="Products" asp-action="Premix">PreMix</a></h3>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <div class="sort w-100 text-center ftco-animate">
+                        <a asp-controller="Products" asp-action="Spirit">
+                            <div class="img" style="background-image: url('images/spirit.jpg'); "></div>
+                        </a><h3><a asp-controller="Products" asp-action="Spirit">Spirit</a></h3>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <div class="sort w-100 text-center ftco-animate">
+                        <a asp-controller="Products" asp-action="Craft">
+                            <div class="img" style="background-image: url('images/craft.jpeg'); "></div>
+                        </a><h3><a asp-controller="Products" asp-action="Craft">Craft</a></h3>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <div class="sort w-100 text-center ftco-animate">
+                        <a asp-controller="Products" asp-action="Lowalcohol">
+                            <div class="img" style="background-image: url('images/low.png'); "></div>
+                        </a><h3><a asp-controller="Products" asp-action="Lowalcohol">LowAlcohol</a></h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center pb-5">
+                <div class="col-md-7 heading-section text-center ftco-animate">
+                    <span class="subheading">Our Delightful offerings</span>
+                    <h2>Tastefully Yours</h2>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-md-3 d-flex">
+                        <div class="product ftco-animate border">
+                            <div class="img d-flex align-items-center justify-content-center cart-pic" style="background-image: url(@item.Image);">
+                                <div class="desc">
+                                    <p class="meta-prod d-flex">
+                                        <a class="d-flex align-items-center justify-content-center" asp-controller="Products" asp-action="Add" asp-route-id="@item.ProductId"><span class="flaticon-shopping-bag"></span></a>
+                                        <a class="d-flex align-items-center justify-content-center" asp-controller="Products" asp-action="Details" asp-route-id="@item.ProductId" asp-route-returnUrl="@Context.Request.Path"><span class="flaticon-visibility"></span></a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="text text-center">
+                                <span class="category">@item.Department.Name</span>
+                                <h2>@item.Name</h2>
+                                <p class="mb-0"><span class="price">@item.Price.Value.ToString("c", CultureInfo.CreateSpecificCulture("en-NZ"))</span></p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <a asp-controller="Products" asp-action="index" class="btn btn-primary d-block">View All Products <span class="fa fa-long-arrow-right"></span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    @{await Html.RenderPartialAsync("_FooterPartial");}
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" /><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00" /></svg></div>
+    @{await Html.RenderPartialAsync("_MainScriptsPartial");}
+</body>
+</html>
+

@@ -1,0 +1,89 @@
+﻿@model WebApplication8.Models.ShoppingCartIndexModel
+@using System.Globalization
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mb-4">
+            <h2>
+                Your shopping cart
+            </h2>
+        </div>
+        <div class="col-md-12 mb-4">
+            <div class="cart-table">
+                <table class="table table-hover table-stripped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>IMAGE</th>
+                            <th>QUANTITY</th>
+                            <th>ITEM</th>
+                            <th class="text-right">PRICE</th>
+                            <th class="text-right">TOTAL</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{if (Model.ShoppingCart != null)
+                                foreach (var line in Model.ShoppingCart)
+                                {
+            <tr>
+                <td class="cart-pic"><img src="@line.product.Image" class="m-auto" alt="@line.product.Name"></td>
+                <td class="cart-title"><a class="text-primary" asp-controller="Products" asp-action="details" asp-route-id="@line.product.ProductId">@line.product.Name</a></td>
+                <td class="text-right">@line.product.Price.Value.ToString("c", CultureInfo.CreateSpecificCulture("en-NZ"))</td>
+                <td class="qua-col">
+                    <div class="quantity itemCartHolder">
+                        <div class="pro-qty">
+                            <a asp-controller="ShoppingCart" asp-action="Remove"  asp-route-id="@line.product.ProductId" asp-route-returnUrl="@Context.Request.Path">
+                                <span class="qtybtn inc">-</span>
+                            </a>
+                            <input name="product_@line.product.ProductId" class="qtytxt" type="text" value="@line.Quantity">
+                            <a asp-controller="Products" asp-action="UpdateCart" asp-route-id="@line.product.ProductId" asp-route-returnUrl="@Context.Request.Path">
+                                <span class="qtybtn inc">+</span>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-right">
+                    @((line.Quantity * line.product.Price).Value.ToString("c", CultureInfo.CreateSpecificCulture("en-NZ")))
+                </td>
+                <td class="text-center"><a class="btnRemoveFromCart fas fa-times text-danger remove" asp-controller="ShoppingCart" asp-action="Remove" asp-route-Id="@line.product.ProductId"><i class="bi remove"></i></a></td>
+            </tr>} }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-right">Total:</td>
+                            <td class="text-right">
+                                @(Model.ShoppingCartTotal.ToString("c",CultureInfo.CreateSpecificCulture("en-NZ")))
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="row col-md-12 mb-4">
+            @if (ViewBag.InvalidAmountText != null)
+            {
+<div>
+    <p class="invalidAmount">@ViewBag.InvalidAmountText</p>
+</div>}
+            <div class="col-md-6 mb-4">
+                <div class="input-group">
+                    <a class="btn btn-primary" asp-action="Index" asp-controller="Products">
+                        <i class="bi bi-cart-plus"></i>Continue Shopping
+                    </a>
+                </div>
+            </div>
+            @if (Model.ShoppingCart !=null && Model.ShoppingCart.Count() != 0)
+            {
+
+<div class="col-md-6 mb-6">
+    <div class="text-right">
+        <div class="btn-group ">
+            <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Check out</a>
+        </div>
+    </div>
+</div>}
+else
+{
+<p>Your cart is empty, add some items to order them</p>}
+        </div>
+    </div>
+</div>

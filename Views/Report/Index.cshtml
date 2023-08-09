@@ -1,0 +1,96 @@
+﻿@model IEnumerable<WebApplication8.ViewModels.OrderCustomerDetailsClass>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<table class="table" style="background-color:darkslategrey">
+    <thead>
+        <tr>
+            <th>
+                Order No 
+            </th>
+            <th>
+                Order Date
+            </th>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subtotal)
+            </th>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Email 
+            </th>
+            <th>
+                Phone No
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order_No)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Order_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <img class="rounded" src="@item.Image" style="max-height:150px ; max-width:60px" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subtotal)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.First_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Last_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer_Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+
+        </tr>
+}
+    </tbody>
+</table>
